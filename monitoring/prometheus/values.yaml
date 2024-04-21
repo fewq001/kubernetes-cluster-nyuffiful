@@ -1,0 +1,38 @@
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - prometheus.kube.local
+
+  persistentVolume:
+    enabled: true
+    storageClass: "nfs"
+
+serverFiles:
+  prometheus.yml:
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+            - localhost:9090
+      - job_name: immich
+        static_configs:
+          - targets:
+            - 192.168.1.112:8028
+      - job_name: cadvisor
+        static_configs:
+          - targets:
+            - 192.168.1.112:8082
+      - job_name: qbitorrent
+        static_configs:
+          - targets:
+            - 192.168.1.112:8000
+      - job_name: node
+        static_configs:
+          - targets:
+            - 192.168.1.112:9100
+      - job_name: nvidia
+        static_configs:
+          - targets:
+            - 192.168.1.112:9202
